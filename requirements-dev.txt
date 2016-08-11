@@ -1,0 +1,3 @@
+nose
+flake8
+coveralls
