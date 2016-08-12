@@ -7,4 +7,6 @@ python:
 install:
     - pip install -r requirements-dev.txt
 script:
-    - nosetests
+    - nosetests --with-coverage
+after_success:
+    - coveralls
