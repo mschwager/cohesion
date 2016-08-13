@@ -355,6 +355,85 @@ class TestParser(unittest.TestCase):
 
         self.assertEmpty(result)
 
+    def test_get_all_class_variable_names_both_types(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            attr1 = 5
+            def __init__(self):
+                self.attr2 = 6
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        classes = parser.get_module_classes(node)
+        result = [
+            name
+            for cls in classes
+            for name in parser.get_all_class_variable_names(cls)
+        ]
+        expected = ['attr1', 'attr2']
+
+        self.assertEqual(result, expected)
+
+    def test_get_all_class_variable_names_just_instance(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            def __init__(self):
+                self.attr = 6
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        classes = parser.get_module_classes(node)
+        result = [
+            name
+            for cls in classes
+            for name in parser.get_all_class_variable_names(cls)
+        ]
+        expected = ['attr']
+
+        self.assertEqual(result, expected)
+
+    def test_get_all_class_variable_names_just_class(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            attr = 6
+            def __init__(self):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        classes = parser.get_module_classes(node)
+        result = [
+            name
+            for cls in classes
+            for name in parser.get_all_class_variable_names(cls)
+        ]
+        expected = ['attr']
+
+        self.assertEqual(result, expected)
+
+    def test_get_all_class_variable_names_used_in_method(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            attr1 = 5
+            def func(self):
+                self.attr2 = 6
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        class_methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+        ]
+        result = [
+            name
+            for method in class_methods
+            for name in parser.get_all_class_variable_names_used_in_method(method)
+        ]
+        expected = ['attr2']
+
+        self.assertEqual(result, expected)
+
 
 if __name__ == "__main__":
     unittest.main()
