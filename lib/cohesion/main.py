@@ -44,17 +44,28 @@ def print_module_cohesion(module_ast_node, verbose=False):
 
         total_method_percentage = 0.0
         for class_method_name in sorted(class_method_name_to_method.keys()):
+            method_variable_names = class_method_name_to_variable_names_used[class_method_name]
+            method_variable_count = len(method_variable_names)
+            class_variable_count = len(class_variable_names)
+
             if class_method_boundedness[class_method_name]:
                 method_percentage = percentage(
-                    len(class_method_name_to_variable_names_used[class_method_name]),
-                    len(class_variable_names)
+                    method_variable_count,
+                    class_variable_count
                 )
             else:
                 method_percentage = 0.0
-            print("    Function: {0} {1:.2f}%".format(class_method_name, method_percentage))
+
+            print("    Function: {0} {1}/{2} {3:.2f}%".format(
+                class_method_name,
+                method_variable_count,
+                class_variable_count,
+                method_percentage
+            ))
+
             if verbose:
                 for variable_name in sorted(class_variable_names):
-                    variable_in_method = variable_name in class_method_name_to_variable_names_used[class_method_name]
+                    variable_in_method = variable_name in method_variable_names
                     print("      Variable: {0} {1}".format(variable_name, variable_in_method))
 
             total_method_percentage += method_percentage

@@ -66,17 +66,21 @@ class ExampleClass2(object):
 $ cohesion -f example.py -v
 File: example.py
   Class: ExampleClass1
-    Function: func2 33.33%
-      Variable: instance_variable False
-      Variable: class_variable1 False
-      Variable: class_variable2 True
-    Function: func1 66.67%
-      Variable: instance_variable True
+    Function: func1 2/3 66.67%
       Variable: class_variable1 True
       Variable: class_variable2 False
-    Total: 50.00%
+      Variable: instance_variable True
+    Function: func2 1/3 33.33%
+      Variable: class_variable1 False
+      Variable: class_variable2 True
+      Variable: instance_variable False
+    Function: func3 0/3 0.00%
+      Variable: class_variable1 False
+      Variable: class_variable2 False
+      Variable: instance_variable False
+    Total: 33.33%
   Class: ExampleClass2
-    Function: func1 100.00%
+    Function: func1 1/1 100.00%
       Variable: instance_variable1 True
     Total: 100.00%
 ```
