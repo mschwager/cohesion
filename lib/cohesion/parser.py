@@ -46,6 +46,42 @@ def get_instance_variables(node):
     ]
 
 
+def get_all_class_variable_names_used_in_method(method):
+    """
+    Return the names of all instance variables associated with a
+    given method
+    """
+    return {
+        variable.attr
+        for variable in get_instance_variables(method)
+    }
+
+
+def get_all_class_variables(cls):
+    """
+    Return class and instance variables associated with a given class
+    """
+    return get_class_variables(cls) + get_instance_variables(cls)
+
+
+def get_all_class_variable_names(cls):
+    """
+    Return the names of all class and instance variables associated with a
+    given class
+    """
+    def name_getter(variable):
+        assert isinstance(variable, (ast.Name, ast.Attribute)), "Unknown variable type"
+        if isinstance(variable, ast.Name):
+            return variable.id
+        elif isinstance(variable, ast.Attribute):
+            return variable.attr
+
+    return {
+        name_getter(variable)
+        for variable in get_all_class_variables(cls)
+    }
+
+
 def get_module_classes(node):
     """
     Return classes associated with a given module

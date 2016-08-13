@@ -27,7 +27,7 @@ setup(
     tests_require=tests_require,
     entry_points={
         'console_scripts': [
-            'cohesion = cohesion.__main__:main',
+            'cohesion = cohesion.main:main',
         ],
     },
 )

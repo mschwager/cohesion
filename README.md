@@ -33,12 +33,53 @@ OR
 ```
 $ git clone https://github.com/mschwager/cohesion.git
 $ cd cohesion
-$ python3 lib/cohesion/__main__.py -h
+$ python3 lib/cohesion/main.py -h
 ```
 
 # Using
 
-TODO
+```
+$ cat example.py
+class ExampleClass1(object):
+    class_variable1 = 5
+    class_variable2 = 6
+
+    def func1(self):
+        self.instance_variable = 6
+
+        def inner_func(b):
+            return b + 5
+
+        local_variable = self.class_variable1
+
+        return local_variable
+
+    def func2(self):
+        print(self.class_variable2)
+
+class ExampleClass2(object):
+    def func1(self):
+        self.instance_variable1 = 7
+```
+
+```
+$ cohesion -f example.py -v
+File: example.py
+  Class: ExampleClass1
+    Function: func2 33.33%
+      Variable: instance_variable False
+      Variable: class_variable1 False
+      Variable: class_variable2 True
+    Function: func1 66.67%
+      Variable: instance_variable True
+      Variable: class_variable1 True
+      Variable: class_variable2 False
+    Total: 50.00%
+  Class: ExampleClass2
+    Function: func1 100.00%
+      Variable: instance_variable1 True
+    Total: 100.00%
+```
 
 # Developing
 

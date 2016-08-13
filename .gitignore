@@ -85,3 +85,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Vim swap files
+*.sw[po]
