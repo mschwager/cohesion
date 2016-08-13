@@ -11,7 +11,7 @@ from cohesion import filesystem
 
 
 def percentage(part, whole):
-    if not part:
+    if not whole:
         return 0.0
 
     return 100.0 * float(part) / float(whole)
@@ -59,7 +59,7 @@ def print_module_cohesion(module_ast_node, verbose=False):
 
             total_method_percentage += method_percentage
 
-        class_percentage = total_method_percentage / len(class_methods)
+        class_percentage = total_method_percentage / len(class_methods) if class_methods else 0.0
         print("    Total: {0:.2f}%".format(class_percentage))
 
 
