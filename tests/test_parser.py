@@ -59,7 +59,7 @@ class TestParser(unittest.TestCase):
         result = [cls.name for cls in classes]
         expected = ["Cls"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_module_classes_multiple(self):
         python_string = self.unindent_string("""
@@ -74,7 +74,7 @@ class TestParser(unittest.TestCase):
         result = [cls.name for cls in classes]
         expected = ["Cls1", "Cls2"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_class_methods_empty(self):
         python_string = self.unindent_string("""
@@ -107,7 +107,7 @@ class TestParser(unittest.TestCase):
         result = [method.name for method in methods]
         expected = ["func1"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_class_methods_multiple(self):
         python_string = self.unindent_string("""
@@ -130,7 +130,7 @@ class TestParser(unittest.TestCase):
         result = [method.name for method in methods]
         expected = ["func1", "func2", "func3"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_class_methods_avoid_nested(self):
         python_string = self.unindent_string("""
@@ -150,7 +150,7 @@ class TestParser(unittest.TestCase):
         result = [method.name for method in methods]
         expected = ["func1"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_class_methods_avoid_lambda(self):
         python_string = self.unindent_string("""
@@ -169,7 +169,7 @@ class TestParser(unittest.TestCase):
         result = [method.name for method in methods]
         expected = ["func1"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_bound_method_is_bound(self):
         python_string = self.unindent_string("""
@@ -188,7 +188,7 @@ class TestParser(unittest.TestCase):
         result = [method.name for method in methods]
         expected = ["func"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_bound_method_non_default_name(self):
         python_string = self.unindent_string("""
@@ -207,7 +207,7 @@ class TestParser(unittest.TestCase):
         result = [method.name for method in methods]
         expected = ["func"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_bound_method_static(self):
         python_string = self.unindent_string("""
@@ -258,7 +258,7 @@ class TestParser(unittest.TestCase):
         result = [instance_variable.attr for instance_variable in instance_variables]
         expected = ["attr"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_instance_variables_from_class_multiple(self):
         python_string = self.unindent_string("""
@@ -273,7 +273,7 @@ class TestParser(unittest.TestCase):
         result = [instance_variable.attr for instance_variable in instance_variables]
         expected = ["attr1", "attr2"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_instance_variables_from_class_multiple_same_line(self):
         python_string = self.unindent_string("""
@@ -287,7 +287,7 @@ class TestParser(unittest.TestCase):
         result = [instance_variable.attr for instance_variable in instance_variables]
         expected = ["attr1", "attr2"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_instance_variables_from_class_avoid_class_variable(self):
         python_string = self.unindent_string("""
@@ -317,7 +317,7 @@ class TestParser(unittest.TestCase):
         result = [class_variable.id for class_variable in class_variables]
         expected = ["attr"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_class_variables_from_class_multiple_targets(self):
         python_string = self.unindent_string("""
@@ -335,7 +335,7 @@ class TestParser(unittest.TestCase):
         result = [class_variable.id for class_variable in class_variables]
         expected = ["attr1", "attr2"]
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_class_variables_from_class_avoid_instance_variable(self):
         python_string = self.unindent_string("""
@@ -372,7 +372,7 @@ class TestParser(unittest.TestCase):
         ]
         expected = ['attr1', 'attr2']
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_all_class_variable_names_just_instance(self):
         python_string = self.unindent_string("""
@@ -390,7 +390,7 @@ class TestParser(unittest.TestCase):
         ]
         expected = ['attr']
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_all_class_variable_names_just_class(self):
         python_string = self.unindent_string("""
@@ -409,7 +409,7 @@ class TestParser(unittest.TestCase):
         ]
         expected = ['attr']
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
     def test_get_all_class_variable_names_used_in_method(self):
         python_string = self.unindent_string("""
@@ -432,7 +432,7 @@ class TestParser(unittest.TestCase):
         ]
         expected = ['attr2']
 
-        self.assertEqual(result, expected)
+        self.assertCountEqual(result, expected)
 
 
 if __name__ == "__main__":
