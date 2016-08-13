@@ -7,31 +7,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cohesion import parser
-
-
-def get_file_contents(filename):
-    with open(filename) as fd:
-        return fd.read()
-
-
-def is_python_file(filename):
-    return filename.endswith('.py')
-
-
-def recursively_get_files_from_directory(directory):
-    return [
-        os.path.join(root, filename)
-        for root, directories, filenames in os.walk(directory)
-        for filename in filenames
-    ]
-
-
-def recursively_get_python_files_from_directory(directory):
-    return [
-        filename
-        for filename in recursively_get_files_from_directory(directory)
-        if is_python_file(filename)
-    ]
+from cohesion import filesystem
 
 
 def percentage(part, whole):
@@ -125,10 +101,10 @@ def main():
     if args.files:
         files = args.files
     elif args.directory:
-        files = recursively_get_python_files_from_directory(args.directory)
+        files = filesystem.recursively_get_python_files_from_directory(args.directory)
 
     file_contents = {
-        filename: get_file_contents(filename)
+        filename: filesystem.get_file_contents(filename)
         for filename in files
     }
 
