@@ -11,6 +11,10 @@ Cohesion is a tool for measuring Python class cohesion.
 > example, in highly cohesive systems functionality is strongly related.
 > - [Wikipedia](https://en.wikipedia.org/wiki/Cohesion_(computer_science))
 
+> When cohesion is high, it means that the methods and variables of the class
+> are co-dependent and hang together as a logical whole.
+> - Clean Code pg. 140
+
 Some of the advantages of high cohesion, also by Wikipedia:
 
 * Reduced module complexity (they are simpler, having fewer operations).
@@ -37,6 +41,9 @@ $ python3 lib/cohesion/main.py -h
 ```
 
 # Using
+
+`Cohesion` measures class and instance variable usage across the methods
+of that class.
 
 ```
 $ cat example.py
