@@ -67,7 +67,7 @@ class ExampleClass2(object):
 ```
 
 ```
-$ cohesion -f example.py -v
+$ cohesion --files example.py --verbose
 File: example.py
   Class: ExampleClass1
     Function: func1 2/3 66.67%

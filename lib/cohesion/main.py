@@ -92,13 +92,13 @@ def parse_args():
         '--files',
         action='store',
         nargs='+',
-        help='analyze these files'
+        help='analyze these Python files'
     )
     files_group.add_argument(
         '-d',
         '--directory',
         action='store',
-        help='analyze this directory of Python files'
+        help='recursively analyze this directory of Python files'
     )
 
     args = p.parse_args()
