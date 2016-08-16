@@ -28,7 +28,7 @@ Some of the advantages of high cohesion, also by Wikipedia:
 # Installing
 
 ```
-$ pip3 install cohesion
+$ pip install cohesion
 $ cohesion -h
 ```
 
@@ -37,7 +37,7 @@ OR
 ```
 $ git clone https://github.com/mschwager/cohesion.git
 $ cd cohesion
-$ python3 lib/cohesion/main.py -h
+$ python lib/cohesion/main.py -h
 ```
 
 # Using
@@ -101,7 +101,7 @@ File: example.py
 First, install development packages:
 
 ```
-$ pip3 install -r requirements-dev.txt
+$ pip install -r requirements-dev.txt
 ```
 
 ## Testing
