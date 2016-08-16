@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import ast
 
@@ -9,7 +9,20 @@ def is_class_method_bound(method, arg_name=BOUND_METHOD_ARGUEMENT_NAME):
     """
     Return whether a class method is bound to the class
     """
-    return method.args.args and method.args.args[0].arg == arg_name
+    if not method.args.args:
+        return False
+
+    first_arg = method.args.args[0]
+
+    # This is a Python 2 vs. Python 3 discrepancy
+    for attr in ['arg', 'id']:
+        if hasattr(first_arg, attr):
+            first_arg_name = getattr(first_arg, attr)
+            break
+    else:
+        assert False, 'Unknown argument type'
+
+    return first_arg_name == arg_name
 
 
 def get_class_methods(cls):
