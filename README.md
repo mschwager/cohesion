@@ -37,7 +37,7 @@ OR
 ```
 $ git clone https://github.com/mschwager/cohesion.git
 $ cd cohesion
-$ python lib/cohesion/main.py -h
+$ python lib/cohesion/__main__.py -h
 ```
 
 # Using
@@ -94,6 +94,23 @@ File: example.py
     Function: func1 1/1 100.00%
       Variable: instance_variable1 True
     Total: 100.00%
+```
+
+## Python Versions
+
+If you would like to simultaneously run `Cohesion` on Python 2 and Python 3
+code then you will have to install it for both versions. I.e.
+
+```
+$ pip2 install cohesion
+$ pip3 install cohesion
+```
+
+Then use the corresponding version to run the module:
+
+```
+$ python2 -m cohesion --files python2_file.py
+$ python3 -m cohesion --files python3_file.py
 ```
 
 # Developing
