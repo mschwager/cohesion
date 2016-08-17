@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/mschwager/cohesion.svg?branch=master)](https://travis-ci.org/mschwager/cohesion)
 [![Coverage Status](https://coveralls.io/repos/github/mschwager/cohesion/badge.svg?branch=master)](https://coveralls.io/github/mschwager/cohesion?branch=master)
+[![Python Versions](https://img.shields.io/pypi/pyversions/cohesion.svg)](https://img.shields.io/pypi/pyversions/cohesion.svg)
+[![PyPI Version](https://img.shields.io/pypi/v/cohesion.svg)](https://img.shields.io/pypi/v/cohesion.svg)
 
 Cohesion is a tool for measuring Python class cohesion.
 
