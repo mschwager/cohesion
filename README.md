@@ -125,11 +125,6 @@ $ pip install -r requirements-dev.txt
 
 ```
 $ nosetests
-.....................
-----------------------------------------------------------------------
-Ran 21 tests in 0.006s
-
-OK
 ```
 
 ## Linting
