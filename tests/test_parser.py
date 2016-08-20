@@ -202,6 +202,158 @@ class TestParser(unittest.TestCase):
 
         self.assertCountEqual(result, expected)
 
+    def test_is_class_method_staticmethod_is_staticmethod(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            @staticmethod
+            def func(self, arg1):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+            if parser.is_class_method_staticmethod(method)
+        ]
+        result = [method.name for method in methods]
+        expected = ["func"]
+
+        self.assertCountEqual(result, expected)
+
+    def test_is_class_method_staticmethod_not_decorated(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            def func(self, arg1):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+            if parser.is_class_method_staticmethod(method)
+        ]
+        result = [method.name for method in methods]
+
+        self.assertEmpty(result)
+
+    def test_is_class_method_classmethod_other_decorator(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            @other_decorator
+            def func(self, arg1):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+            if parser.is_class_method_classmethod(method)
+        ]
+        result = [method.name for method in methods]
+
+        self.assertEmpty(result)
+
+    def test_is_class_method_classmethod_other_decorator_with_arguments(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            @other_decorator("argument")
+            def func(self, arg1):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+            if parser.is_class_method_classmethod(method)
+        ]
+        result = [method.name for method in methods]
+
+        self.assertEmpty(result)
+
+    def test_is_class_method_classmethod_is_classmethod(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            @classmethod
+            def func(self, arg1):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+            if parser.is_class_method_classmethod(method)
+        ]
+        result = [method.name for method in methods]
+        expected = ["func"]
+
+        self.assertCountEqual(result, expected)
+
+    def test_is_class_method_classmethod_not_decorated(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            def func(self, arg1):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+            if parser.is_class_method_classmethod(method)
+        ]
+        result = [method.name for method in methods]
+
+        self.assertEmpty(result)
+
+    def test_is_class_method_staticmethod_other_decorator(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            @other_decorator
+            def func(self, arg1):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+            if parser.is_class_method_staticmethod(method)
+        ]
+        result = [method.name for method in methods]
+
+        self.assertEmpty(result)
+
+    def test_is_class_method_staticmethod_other_decorator_with_arguments(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            @other_decorator("argument")
+            def func(self, arg1):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+            if parser.is_class_method_staticmethod(method)
+        ]
+        result = [method.name for method in methods]
+
+        self.assertEmpty(result)
+
     def test_bound_method_non_default_name(self):
         python_string = self.unindent_string("""
         class Cls(object):

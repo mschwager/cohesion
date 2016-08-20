@@ -5,6 +5,29 @@ import ast
 BOUND_METHOD_ARGUEMENT_NAME = "self"
 
 
+def get_object_name(obj):
+    """
+    Return the name of a given object
+    """
+    name_dispatch = {
+        ast.Name: "id",
+        ast.Attribute: "attr",
+        ast.Call: "func",
+        ast.FunctionDef: "name",
+        ast.ClassDef: "name",
+    }
+
+    # This is a new ast type in Python 3
+    if hasattr(ast, "arg"):
+        name_dispatch[ast.arg] = "arg"
+
+    while not isinstance(obj, str):
+        assert type(obj) in name_dispatch
+        obj = getattr(obj, name_dispatch[type(obj)])
+
+    return obj
+
+
 def is_class_method_bound(method, arg_name=BOUND_METHOD_ARGUEMENT_NAME):
     """
     Return whether a class method is bound to the class
@@ -14,15 +37,30 @@ def is_class_method_bound(method, arg_name=BOUND_METHOD_ARGUEMENT_NAME):
 
     first_arg = method.args.args[0]
 
-    # This is a Python 2 vs. Python 3 discrepancy
-    for attr in ['arg', 'id']:
-        if hasattr(first_arg, attr):
-            first_arg_name = getattr(first_arg, attr)
-            break
-    else:
-        assert False, 'Unknown argument type'
+    first_arg_name = get_object_name(first_arg)
 
     return first_arg_name == arg_name
+
+
+def class_method_has_decorator(method, decorator):
+    """
+    Return whether a class method has a specific decorator
+    """
+    return decorator in [get_object_name(d) for d in method.decorator_list]
+
+
+def is_class_method_classmethod(method):
+    """
+    Return whether a class method is a classmethod
+    """
+    return class_method_has_decorator(method, "classmethod")
+
+
+def is_class_method_staticmethod(method):
+    """
+    Return whether a class method is a staticmethod
+    """
+    return class_method_has_decorator(method, "staticmethod")
 
 
 def get_class_methods(cls):
@@ -65,7 +103,7 @@ def get_all_class_variable_names_used_in_method(method):
     given method
     """
     return {
-        variable.attr
+        get_object_name(variable)
         for variable in get_instance_variables(method)
     }
 
@@ -82,15 +120,8 @@ def get_all_class_variable_names(cls):
     Return the names of all class and instance variables associated with a
     given class
     """
-    def name_getter(variable):
-        assert isinstance(variable, (ast.Name, ast.Attribute)), "Unknown variable type"
-        if isinstance(variable, ast.Name):
-            return variable.id
-        elif isinstance(variable, ast.Attribute):
-            return variable.attr
-
     return {
-        name_getter(variable)
+        get_object_name(variable)
         for variable in get_all_class_variables(cls)
     }
 
