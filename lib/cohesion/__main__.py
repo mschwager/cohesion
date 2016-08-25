@@ -19,6 +19,10 @@ def percentage(part, whole):
     return 100.0 * float(part) / float(whole)
 
 
+def leftpad_print(s, leftpad_length=0):
+    print(" " * leftpad_length + s)
+
+
 def print_module_cohesion(module_ast_node, verbose=False):
     module_classes = parser.get_module_classes(module_ast_node)
 
@@ -42,7 +46,7 @@ def print_module_cohesion(module_ast_node, verbose=False):
             for method_name, method in class_method_name_to_method.items()
         }
 
-        print("  Class: {}".format(module_class.name))
+        leftpad_print("Class: {}".format(module_class.name), leftpad_length=2)
 
         total_method_percentage = 0.0
         for class_method_name in sorted(class_method_name_to_method.keys()):
@@ -58,22 +62,25 @@ def print_module_cohesion(module_ast_node, verbose=False):
             else:
                 method_percentage = 0.0
 
-            print("    Function: {0} {1}/{2} {3:.2f}%".format(
+            leftpad_print("Function: {0} {1}/{2} {3:.2f}%".format(
                 class_method_name,
                 method_variable_count,
                 class_variable_count,
                 method_percentage
-            ))
+            ), leftpad_length=4)
 
             if verbose:
                 for variable_name in sorted(class_variable_names):
                     variable_in_method = variable_name in method_variable_names
-                    print("      Variable: {0} {1}".format(variable_name, variable_in_method))
+                    leftpad_print("Variable: {0} {1}".format(
+                        variable_name,
+                        variable_in_method
+                    ), leftpad_length=6)
 
             total_method_percentage += method_percentage
 
         class_percentage = total_method_percentage / len(class_methods) if class_methods else 0.0
-        print("    Total: {0:.2f}%".format(class_percentage))
+        leftpad_print("Total: {0:.2f}%".format(class_percentage), leftpad_length=4)
 
 
 def parse_args():
@@ -127,7 +134,7 @@ def main():
     }
 
     for filename, file_ast_node in file_ast_nodes.items():
-        print("File: {}".format(filename))
+        leftpad_print("File: {}".format(filename), leftpad_length=0)
         print_module_cohesion(file_ast_node, args.verbose)
 
 
