@@ -23,10 +23,75 @@ def leftpad_print(s, leftpad_length=0):
     print(" " * leftpad_length + s)
 
 
-def print_module_cohesion(module_ast_node, verbose=False):
+def print_module_structure(filename, module_structure, verbose=False):
+    leftpad_print("File: {}".format(filename), leftpad_length=0)
+
+    for class_name, class_structure in module_structure.items():
+        leftpad_print("Class: {}".format(class_name), leftpad_length=2)
+
+        class_variable_count = len(class_structure["variables"])
+
+        total_function_variable_percentage = 0.0
+        for function_name, function_structure in class_structure["functions"].items():
+            function_variable_count = len(function_structure["variables"])
+            function_variable_percentage = percentage(
+                function_variable_count,
+                class_variable_count
+            )
+
+            function_output_string = "Function: {}".format(function_name)
+            if function_structure["staticmethod"]:
+                function_output_string = "{} staticmethod".format(function_output_string)
+            elif function_structure["classmethod"]:
+                function_output_string = "{} classmethod".format(function_output_string)
+            elif not function_structure["bounded"]:
+                function_variable_percentage = 0.0
+                function_output_string = "{0} {1}/{2} 0.0%".format(
+                    function_output_string,
+                    function_variable_count,
+                    class_variable_count
+                )
+            else:
+                function_output_string = "{0} {1}/{2} {3:.2f}%".format(
+                    function_output_string,
+                    function_variable_count,
+                    class_variable_count,
+                    function_variable_percentage
+                )
+
+            leftpad_print(function_output_string, leftpad_length=4)
+
+            if verbose:
+                for class_variable_name in sorted(class_structure["variables"]):
+                    if class_variable_name in function_structure["variables"]:
+                        leftpad_print(
+                            "Variable: {} True".format(class_variable_name),
+                            leftpad_length=6
+                        )
+                    else:
+                        leftpad_print(
+                            "Variable: {} False".format(class_variable_name),
+                            leftpad_length=6
+                        )
+
+            total_function_variable_percentage += function_variable_percentage
+
+        class_function_count = len(class_structure["functions"])
+        if class_function_count:
+            class_variable_percentage = total_function_variable_percentage / class_function_count
+        else:
+            class_variable_percentage = 0.0
+
+        leftpad_print("Total: {0:.2f}%".format(class_variable_percentage), leftpad_length=4)
+
+
+def get_module_structure(module_ast_node):
     module_classes = parser.get_module_classes(module_ast_node)
 
+    result = {}
     for module_class in module_classes:
+        class_name = parser.get_object_name(module_class)
+
         class_variable_names = parser.get_all_class_variable_names(module_class)
 
         class_methods = parser.get_class_methods(module_class)
@@ -36,51 +101,40 @@ def print_module_cohesion(module_ast_node, verbose=False):
             for method in class_methods
         }
 
-        class_method_name_to_variable_names_used = {
+        class_method_name_to_variable_names = {
             method_name: parser.get_all_class_variable_names_used_in_method(method)
             for method_name, method in class_method_name_to_method.items()
         }
 
-        class_method_boundedness = {
+        class_method_name_to_boundedness = {
             method_name: parser.is_class_method_bound(method)
             for method_name, method in class_method_name_to_method.items()
         }
 
-        leftpad_print("Class: {}".format(module_class.name), leftpad_length=2)
+        class_method_name_to_staticmethodness = {
+            method_name: parser.is_class_method_staticmethod(method)
+            for method_name, method in class_method_name_to_method.items()
+        }
 
-        total_method_percentage = 0.0
-        for class_method_name in sorted(class_method_name_to_method.keys()):
-            method_variable_names = class_method_name_to_variable_names_used[class_method_name]
-            method_variable_count = len(method_variable_names)
-            class_variable_count = len(class_variable_names)
+        class_method_name_to_classmethodness = {
+            method_name: parser.is_class_method_classmethod(method)
+            for method_name, method in class_method_name_to_method.items()
+        }
 
-            if class_method_boundedness[class_method_name]:
-                method_percentage = percentage(
-                    method_variable_count,
-                    class_variable_count
-                )
-            else:
-                method_percentage = 0.0
+        result[class_name] = {}
+        result[class_name]["variables"] = class_variable_names
+        result[class_name]["functions"] = {}
+        result[class_name]["functions"] = {
+            method_name: {
+                "variables": class_method_name_to_variable_names[method_name],
+                "bounded": class_method_name_to_boundedness[method_name],
+                "staticmethod": class_method_name_to_staticmethodness[method_name],
+                "classmethod": class_method_name_to_classmethodness[method_name],
+            }
+            for method_name in class_method_name_to_method.keys()
+        }
 
-            leftpad_print("Function: {0} {1}/{2} {3:.2f}%".format(
-                class_method_name,
-                method_variable_count,
-                class_variable_count,
-                method_percentage
-            ), leftpad_length=4)
-
-            if verbose:
-                for variable_name in sorted(class_variable_names):
-                    variable_in_method = variable_name in method_variable_names
-                    leftpad_print("Variable: {0} {1}".format(
-                        variable_name,
-                        variable_in_method
-                    ), leftpad_length=6)
-
-            total_method_percentage += method_percentage
-
-        class_percentage = total_method_percentage / len(class_methods) if class_methods else 0.0
-        leftpad_print("Total: {0:.2f}%".format(class_percentage), leftpad_length=4)
+    return result
 
 
 def parse_args():
@@ -134,8 +188,9 @@ def main():
     }
 
     for filename, file_ast_node in file_ast_nodes.items():
-        leftpad_print("File: {}".format(filename), leftpad_length=0)
-        print_module_cohesion(file_ast_node, args.verbose)
+        module_structure = get_module_structure(file_ast_node)
+
+        print_module_structure(filename, module_structure, args.verbose)
 
 
 if __name__ == "__main__":
