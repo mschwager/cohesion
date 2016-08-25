@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import argparse
+import json
 import os
 import sys
 
@@ -10,6 +11,13 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cohesion import parser
 from cohesion import filesystem
+
+
+class ModuleStructureEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, set):
+            return list(obj)
+        return json.JSONEncoder.default(self, obj)
 
 
 def percentage(part, whole):
@@ -142,11 +150,18 @@ def parse_args():
         A tool for measuring Python class cohesion.
         ''', formatter_class=argparse.RawTextHelpFormatter)
 
-    p.add_argument(
+    output_group = p.add_mutually_exclusive_group()
+    output_group.add_argument(
         '-v',
         '--verbose',
         action='store_true',
         help='print more verbose output'
+    )
+    output_group.add_argument(
+        '-x',
+        '--debug',
+        action='store_true',
+        help='print debugging output'
     )
 
     files_group = p.add_mutually_exclusive_group(required=True)
@@ -190,7 +205,15 @@ def main():
     for filename, file_ast_node in file_ast_nodes.items():
         module_structure = get_module_structure(file_ast_node)
 
-        print_module_structure(filename, module_structure, args.verbose)
+        if args.debug:
+            print(json.dumps(
+                module_structure,
+                cls=ModuleStructureEncoder,
+                indent=4,
+                separators=(',', ': ')
+            ))
+        else:
+            print_module_structure(filename, module_structure, args.verbose)
 
 
 if __name__ == "__main__":
