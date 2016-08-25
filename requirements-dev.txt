@@ -1,4 +1,4 @@
-nose
+nose2
 flake8
 coveralls
 pyfakefs

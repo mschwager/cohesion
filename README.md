@@ -126,7 +126,7 @@ $ pip install -r requirements-dev.txt
 ## Testing
 
 ```
-$ nosetests
+$ nose2
 ```
 
 ## Linting
@@ -138,5 +138,5 @@ $ flake8
 ## Coverage
 
 ```
-$ nosetests --with-coverage
+$ nose2 --with-coverage
 ```
