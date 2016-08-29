@@ -29,6 +29,13 @@ def get_object_name(obj):
     return obj
 
 
+def get_attribute_name_id(attr):
+    """
+    Return the attribute name identifier
+    """
+    return attr.value.id if isinstance(attr.value, ast.Name) else None
+
+
 def is_class_method_bound(method, arg_name=BOUND_METHOD_ARGUMENT_NAME):
     """
     Return whether a class method is bound to the class
@@ -95,7 +102,7 @@ def get_instance_variables(node, bound_name_classifier=BOUND_METHOD_ARGUMENT_NAM
         child
         for child in ast.walk(node)
         if isinstance(child, ast.Attribute) and
-        child.value.id == bound_name_classifier
+        get_attribute_name_id(child) == bound_name_classifier
     ]
     node_function_call_names = [
         get_object_name(child)
