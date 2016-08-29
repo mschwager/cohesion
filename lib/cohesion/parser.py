@@ -2,7 +2,7 @@
 
 import ast
 
-BOUND_METHOD_ARGUEMENT_NAME = "self"
+BOUND_METHOD_ARGUMENT_NAME = "self"
 
 
 def get_object_name(obj):
@@ -29,7 +29,7 @@ def get_object_name(obj):
     return obj
 
 
-def is_class_method_bound(method, arg_name=BOUND_METHOD_ARGUEMENT_NAME):
+def is_class_method_bound(method, arg_name=BOUND_METHOD_ARGUMENT_NAME):
     """
     Return whether a class method is bound to the class
     """
@@ -87,7 +87,7 @@ def get_class_variables(cls):
     ]
 
 
-def get_instance_variables(node):
+def get_instance_variables(node, bound_name_classifier=BOUND_METHOD_ARGUMENT_NAME):
     """
     Return instance variables used in an AST node
     """
@@ -95,7 +95,7 @@ def get_instance_variables(node):
         child
         for child in ast.walk(node)
         if isinstance(child, ast.Attribute) and
-        child.value.id == BOUND_METHOD_ARGUEMENT_NAME
+        child.value.id == bound_name_classifier
     ]
     node_function_call_names = [
         get_object_name(child)
