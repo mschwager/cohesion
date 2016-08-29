@@ -575,6 +575,26 @@ class TestParser(unittest.TestCase):
 
         self.assertCountEqual(result, expected)
 
+    def test_get_all_class_variable_names_ensure_no_method_names(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            attr = 6
+            def func(self):
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        classes = parser.get_module_classes(node)
+        result = [
+            name
+            for cls in classes
+            for name in parser.get_all_class_variable_names(cls)
+        ]
+        # Ensure 'func' isn't in the list of included names
+        expected = ['attr']
+
+        self.assertCountEqual(result, expected)
+
     def test_get_all_class_variable_names_used_in_method(self):
         python_string = self.unindent_string("""
         class Cls(object):
@@ -595,6 +615,81 @@ class TestParser(unittest.TestCase):
             for name in parser.get_all_class_variable_names_used_in_method(method)
         ]
         expected = ['attr2']
+
+        self.assertCountEqual(result, expected)
+
+    def test_ensure_method_call_not_considered_instance_variable(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            def func1(self):
+                pass
+            def func2(self):
+                self.attr1 = 5
+                self.func1()
+                self.attr2 = self.attr1
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        class_methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+        ]
+        result = [
+            name
+            for method in class_methods
+            for name in parser.get_all_class_variable_names_used_in_method(method)
+        ]
+        # Ensure 'func1' isn't in the list of included names
+        expected = ['attr1', 'attr2']
+
+        self.assertCountEqual(result, expected)
+
+    def test_ensure_decorator_not_considered_instance_variable(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            @library.decorator
+            def func(self):
+                self.attr1 = 5
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        class_methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+        ]
+        result = [
+            name
+            for method in class_methods
+            for name in parser.get_all_class_variable_names_used_in_method(method)
+        ]
+        # Ensure 'decorator' isn't in the list of included names
+        expected = ['attr1']
+
+        self.assertCountEqual(result, expected)
+
+    def test_ensure_unbound_attribute_not_considered_instance_variable(self):
+        python_string = self.unindent_string("""
+        class Cls(object):
+            def func(self):
+                self.attr1 = 5
+                otherclass.attr2 = 6
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        class_methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+        ]
+        result = [
+            name
+            for method in class_methods
+            for name in parser.get_all_class_variable_names_used_in_method(method)
+        ]
+        # Ensure 'attr2' isn't in the list of included names
+        expected = ['attr1']
 
         self.assertCountEqual(result, expected)
 

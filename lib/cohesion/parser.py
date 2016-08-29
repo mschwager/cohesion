@@ -15,6 +15,7 @@ def get_object_name(obj):
         ast.Call: "func",
         ast.FunctionDef: "name",
         ast.ClassDef: "name",
+        ast.Subscript: "value",
     }
 
     # This is a new ast type in Python 3
@@ -90,11 +91,23 @@ def get_instance_variables(node):
     """
     Return instance variables used in an AST node
     """
-    return [
+    node_attributes = [
         child
         for child in ast.walk(node)
-        if isinstance(child, ast.Attribute)
+        if isinstance(child, ast.Attribute) and
+        child.value.id == BOUND_METHOD_ARGUEMENT_NAME
     ]
+    node_function_call_names = [
+        get_object_name(child)
+        for child in ast.walk(node)
+        if isinstance(child, ast.Call)
+    ]
+    node_instance_variables = [
+        attribute
+        for attribute in node_attributes
+        if get_object_name(attribute) not in node_function_call_names
+    ]
+    return node_instance_variables
 
 
 def get_all_class_variable_names_used_in_method(method):
