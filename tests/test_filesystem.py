@@ -2,17 +2,12 @@
 
 import collections
 import os
+import textwrap
 import unittest
 
 from cohesion import filesystem
 
 from pyfakefs import fake_filesystem_unittest
-
-
-CONTENTS = """
-class Cls(object):
-    pass
-"""
 
 
 class TestFilesystem(fake_filesystem_unittest.TestCase):
@@ -38,13 +33,18 @@ class TestFilesystem(fake_filesystem_unittest.TestCase):
     def test_get_file_contents(self):
         filename = os.path.join("directory", "filename.py")
 
+        contents = textwrap.dedent("""
+        class Cls(object):
+            pass
+        """)
+
         self.fs.CreateFile(
             filename,
-            contents=CONTENTS
+            contents=contents
         )
         result = filesystem.get_file_contents(filename)
 
-        self.assertEqual(result, CONTENTS)
+        self.assertEqual(result, contents)
 
     def test_recursively_get_files_from_directory(self):
         filenames = [
