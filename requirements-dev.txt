@@ -1,5 +1,5 @@
-nose2
-cov-core
-flake8
-coveralls
-pyfakefs
+nose2==0.6.5
+cov-core==1.15.0
+flake8==3.2.1
+coveralls==1.1
+pyfakefs==2.7
