@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This project adheres to [CHANGELOG](http://keepachangelog.com/).
 
+## [0.7.0] - 2017-06-15
+### Added
+- Python 3.6 support
+
 ## [0.6.1] - 2016-09-21
 ### Changed
 - Improved instance variable detection

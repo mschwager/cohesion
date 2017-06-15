@@ -10,7 +10,7 @@ with open(requirements_dev_filename) as fd:
 
 setup(
     name='cohesion',
-    version='0.6.1',
+    version='0.7.0',
     description='A tool for measuring Python class cohesion.',
     url='https://github.com/mschwager/cohesion',
     packages=['cohesion'],
