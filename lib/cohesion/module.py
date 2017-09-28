@@ -11,10 +11,10 @@ class Module(object):
         self.structure = self._create_structure(file_ast_node)
 
     def classes(self):
-        return self.structure.keys()
+        return list(self.structure.keys())
 
     def functions(self, class_name):
-        return self.structure[class_name]["functions"].keys()
+        return list(self.structure[class_name]["functions"].keys())
 
     def class_variables(self, class_name):
         return self.structure[class_name]["variables"]
