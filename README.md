@@ -98,6 +98,9 @@ File: example.py
     Total: 100.00%
 ```
 
+The `--below` and `--above` flags can be specified to only show classes with
+a cohesion value below or above the specified percentage, respectively.
+
 ## Python Versions
 
 If you would like to simultaneously run `Cohesion` on Python 2 and Python 3
