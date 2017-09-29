@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import collections
+
 from cohesion import parser
 from cohesion import filesystem
 
@@ -32,7 +34,8 @@ class Module(object):
     def _create_structure(file_ast_node):
         module_classes = parser.get_module_classes(file_ast_node)
 
-        result = {}
+        result = collections.defaultdict(dict)
+
         for module_class in module_classes:
             class_name = parser.get_object_name(module_class)
 
@@ -65,9 +68,7 @@ class Module(object):
                 for method_name, method in class_method_name_to_method.items()
             }
 
-            result[class_name] = {}
             result[class_name]["variables"] = class_variable_names
-            result[class_name]["functions"] = {}
             result[class_name]["functions"] = {
                 method_name: {
                     "variables": class_method_name_to_variable_names[method_name],
