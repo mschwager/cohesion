@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
+from __future__ import division
+
 import collections
+import operator
 
 from cohesion import parser
 from cohesion import filesystem
@@ -29,6 +32,46 @@ class Module(object):
         file_contents = filesystem.get_file_contents(filename)
 
         return cls(file_contents)
+
+    def _filter(self, predicate=lambda class_name: True):
+        self.structure = {
+            class_name: class_structure
+            for class_name, class_structure in self.structure.items()
+            if predicate(class_name)
+        }
+
+    def class_cohesion_percentage(self, class_name):
+        total_function_variable_count = sum(
+            len(function_structure["variables"])
+            for function_structure in
+            self.structure[class_name]["functions"].values()
+        )
+
+        total_class_variable_count = (
+            len(self.structure[class_name]["variables"]) *
+            len(self.structure[class_name]["functions"])
+        )
+
+        class_percentage = (
+            total_function_variable_count /
+            total_class_variable_count
+        ) * 100
+
+        return class_percentage
+
+    def filter_below(self, percentage):
+        def predicate(class_name):
+            class_percentage = self.class_cohesion_percentage(class_name)
+            return operator.le(class_percentage, percentage)
+
+        self._filter(predicate)
+
+    def filter_above(self, percentage):
+        def predicate(class_name):
+            class_percentage = self.class_cohesion_percentage(class_name)
+            return operator.ge(class_percentage, percentage)
+
+        self._filter(predicate)
 
     @staticmethod
     def _create_structure(file_ast_node):

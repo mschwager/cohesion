@@ -88,6 +88,115 @@ class TestModule(unittest.TestCase):
 
         self.assertEquals(result, expected)
 
+    def test_module_filter_below_false(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            class_variable = 'foo'
+            def func(self):
+                self.instance_variable = 'bar'
+        """)
+
+        python_module = module.Module(python_string)
+        python_module.filter_below(40)
+
+        result = python_module.classes()
+
+        self.assertEmpty(result)
+
+    def test_module_filter_below_true(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            class_variable = 'foo'
+            def func(self):
+                self.instance_variable = 'bar'
+        """)
+
+        python_module = module.Module(python_string)
+        python_module.filter_below(60)
+
+        result = python_module.classes()
+        expected = ["Cls"]
+
+        self.assertEqual(result, expected)
+
+    def test_module_filter_below_equal(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            class_variable = 'foo'
+            def func(self):
+                self.instance_variable = 'bar'
+        """)
+
+        python_module = module.Module(python_string)
+        python_module.filter_below(50)
+
+        result = python_module.classes()
+        expected = ["Cls"]
+
+        self.assertEqual(result, expected)
+
+    def test_module_filter_above_false(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            class_variable = 'foo'
+            def func(self):
+                self.instance_variable = 'bar'
+        """)
+
+        python_module = module.Module(python_string)
+        python_module.filter_above(60)
+
+        result = python_module.classes()
+
+        self.assertEmpty(result)
+
+    def test_module_filter_above_true(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            class_variable = 'foo'
+            def func(self):
+                self.instance_variable = 'bar'
+        """)
+
+        python_module = module.Module(python_string)
+        python_module.filter_above(40)
+
+        result = python_module.classes()
+        expected = ["Cls"]
+
+        self.assertEqual(result, expected)
+
+    def test_module_filter_above_equal(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            class_variable = 'foo'
+            def func(self):
+                self.instance_variable = 'bar'
+        """)
+
+        python_module = module.Module(python_string)
+        python_module.filter_above(50)
+
+        result = python_module.classes()
+        expected = ["Cls"]
+
+        self.assertEqual(result, expected)
+
+    def test_module_class_cohesion_percentage(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            class_variable = 'foo'
+            def func(self):
+                self.instance_variable = 'bar'
+        """)
+
+        python_module = module.Module(python_string)
+
+        result = python_module.class_cohesion_percentage("Cls")
+        expected = 50
+
+        self.assertEqual(result, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

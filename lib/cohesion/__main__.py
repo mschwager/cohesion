@@ -127,6 +127,36 @@ def parse_args():
         help='recursively analyze this directory of Python files'
     )
 
+    def percentage(value):
+        error_message = 'invalid percentage {!r} please specify a number between 0 and 100'.format(value)
+        try:
+            float_value = float(value)
+        except ValueError:
+            raise argparse.ArgumentTypeError(error_message)
+
+        if not 0.0 <= float_value <= 100.0:
+            raise argparse.ArgumentTypeError(error_message)
+
+        return float_value
+
+    filters_group = p.add_mutually_exclusive_group()
+    filters_group.add_argument(
+        '-b',
+        '--below',
+        action='store',
+        type=percentage,
+        default=None,
+        help='only show results with this percentage or lower'
+    )
+    filters_group.add_argument(
+        '-a',
+        '--above',
+        action='store',
+        type=percentage,
+        default=None,
+        help='only show results with this percentage or higher'
+    )
+
     args = p.parse_args()
 
     return args
@@ -146,13 +176,19 @@ def main():
     }
 
     for filename, file_module in file_modules.items():
+        if args.below:
+            file_module.filter_below(args.below)
+        elif args.above:
+            file_module.filter_above(args.above)
+
         if args.debug:
-            print(json.dumps(
+            result = json.dumps(
                 file_module.structure,
                 cls=ModuleStructureEncoder,
                 indent=4,
                 separators=(',', ': ')
-            ))
+            )
+            print(result)
         else:
             print_module_structure(filename, file_module.structure, args.verbose)
 
