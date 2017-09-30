@@ -7,10 +7,8 @@ import json
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from cohesion import filesystem
-from cohesion import module
+from . import filesystem
+from . import module
 
 
 class ModuleStructureEncoder(json.JSONEncoder):

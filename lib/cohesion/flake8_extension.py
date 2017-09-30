@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-from cohesion import module
+import cohesion
 
 
 class CohesionChecker(object):
-    name = 'cohesion'
-    version = '0.7.0'
+    name = cohesion.__name__
+    version = cohesion.__version__
     off_by_default = True
 
     _code = 'C501'
@@ -40,7 +40,7 @@ class CohesionChecker(object):
         cls.cohesion_below = options.cohesion_below
 
     def run(self):
-        file_module = module.Module.from_file(self.filename)
+        file_module = cohesion.module.Module.from_file(self.filename)
         file_module.filter_below(self.cohesion_below)
 
         for class_name in file_module.classes():

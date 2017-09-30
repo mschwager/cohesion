@@ -5,8 +5,8 @@ from __future__ import division
 import collections
 import operator
 
-from cohesion import parser
-from cohesion import filesystem
+from . import parser
+from . import filesystem
 
 
 class Module(object):

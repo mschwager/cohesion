@@ -1,6 +1,13 @@
 from setuptools import setup
 
 import os
+import sys
+
+PACKAGE_DIRECTORY = 'lib'
+
+sys.path.append(PACKAGE_DIRECTORY)
+
+import cohesion
 
 requirements_dev_filename = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 'requirements-dev.txt')
@@ -9,12 +16,12 @@ with open(requirements_dev_filename) as fd:
     tests_require = [i.strip() for i in fd.readlines()]
 
 setup(
-    name='cohesion',
-    version='0.7.0',
+    name=cohesion.__name__,
+    version=cohesion.__version__,
     description='A tool for measuring Python class cohesion.',
     url='https://github.com/mschwager/cohesion',
     packages=['cohesion'],
-    package_dir={'': 'lib'},
+    package_dir={'': PACKAGE_DIRECTORY},
     license='GPLv3',
     classifiers=[
         'Environment :: Console',
