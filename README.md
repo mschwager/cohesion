@@ -101,6 +101,23 @@ File: example.py
 The `--below` and `--above` flags can be specified to only show classes with
 a cohesion value below or above the specified percentage, respectively.
 
+## Flake8 Support
+
+You can now lint Python files for classes with low cohesion with `flake8`!
+First, ensure your installation has registered `cohesion`:
+
+```
+$ flake8 --version
+3.2.1 (pyflakes: 1.0.0, cohesion: 0.7.0, pycodestyle: 2.2.0, mccabe: 0.5.3) CPython 2.7.12 on Linux
+```
+
+And now use `flake8` to lint your file with the extension enabled:
+
+```
+$ flake8 --enable-extension=C50 example.py
+example.py:1:1: C501 class has low cohesion
+```
+
 ## Python Versions
 
 If you would like to simultaneously run `Cohesion` on Python 2 and Python 3
