@@ -111,6 +111,8 @@ class Module(object):
                 for method_name, method in class_method_name_to_method.items()
             }
 
+            result[class_name]["lineno"] = module_class.lineno
+            result[class_name]["col_offset"] = module_class.col_offset
             result[class_name]["variables"] = class_variable_names
             result[class_name]["functions"] = {
                 method_name: {

@@ -197,6 +197,37 @@ class TestModule(unittest.TestCase):
 
         self.assertEqual(result, expected)
 
+    def test_module_class_lineno(self):
+        python_string = textwrap.dedent("""
+        def foo():
+            pass
+        class Cls(object):
+            pass
+        """)
+
+        python_module = module.Module(python_string)
+
+        result = python_module.structure["Cls"]["lineno"]
+
+        # Don't forget the initial newline
+        expected = 4
+
+        self.assertEqual(result, expected)
+
+    def test_module_class_col_offset(self):
+        python_string = textwrap.dedent("""
+        def foo():
+            class Cls(object):
+                pass
+        """)
+
+        python_module = module.Module(python_string)
+
+        result = python_module.structure["Cls"]["col_offset"]
+        expected = 4
+
+        self.assertEqual(result, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -35,7 +35,12 @@ def print_module_structure(filename, module_structure, verbose=False):
     leftpad_print("File: {}".format(filename), leftpad_length=0)
 
     for class_name, class_structure in module_structure.items():
-        leftpad_print("Class: {}".format(class_name), leftpad_length=2)
+        class_output_string = "Class: {} ({}:{})".format(
+            class_name,
+            class_structure["lineno"],
+            class_structure["col_offset"]
+        )
+        leftpad_print(class_output_string, leftpad_length=2)
 
         class_variable_count = len(class_structure["variables"])
 

@@ -9,7 +9,7 @@ class CohesionChecker(object):
     off_by_default = True
 
     _code = 'C501'
-    _error_tmpl = 'C501 has classes {!r}'
+    _error_tmpl = 'C501 has class {!r}'
 
     def __init__(self, tree, filename):
         self.tree = tree
@@ -40,5 +40,11 @@ class CohesionChecker(object):
         file_module = module.Module.from_file(self.filename)
 
         if not self.argument:
-            output = self._error_tmpl.format(', '.join(file_module.classes()))
-            yield (0, 0, output, type(self))
+            for class_name in file_module.classes():
+                output = self._error_tmpl.format(class_name)
+                yield (
+                    file_module.structure[class_name]['lineno'],
+                    file_module.structure[class_name]['col_offset'],
+                    output,
+                    type(self)
+                )
