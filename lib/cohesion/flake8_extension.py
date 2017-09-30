@@ -9,7 +9,7 @@ class CohesionChecker(object):
     off_by_default = True
 
     _code = 'C501'
-    _error_tmpl = 'C501 has class {!r}'
+    _error_tmpl = 'C501 class has low cohesion'
 
     def __init__(self, tree, filename):
         self.tree = tree
@@ -17,9 +17,12 @@ class CohesionChecker(object):
 
     @classmethod
     def add_options(cls, parser):
-        flag = '--argument'
+        flag = '--cohesion-below'
         kwargs = {
-            'action': 'store_true',
+            'action': 'store',
+            'type': 'float',
+            'default': 50.0,
+            'help': 'only show cohesion results with this percentage or lower',
             'parse_from_config': 'True',
         }
         config_opts = getattr(parser, 'config_options', None)
@@ -27,24 +30,23 @@ class CohesionChecker(object):
             # flake8 2.x
             kwargs.pop('parse_from_config')
             parser.add_option(flag, **kwargs)
-            parser.config_options.append('argument')
+            parser.config_options.append('cohesion-below')
         else:
             # flake8 3.x
             parser.add_option(flag, **kwargs)
 
     @classmethod
     def parse_options(cls, options):
-        cls.argument = options.argument
+        cls.cohesion_below = options.cohesion_below
 
     def run(self):
         file_module = module.Module.from_file(self.filename)
+        file_module.filter_below(self.cohesion_below)
 
-        if not self.argument:
-            for class_name in file_module.classes():
-                output = self._error_tmpl.format(class_name)
-                yield (
-                    file_module.structure[class_name]['lineno'],
-                    file_module.structure[class_name]['col_offset'],
-                    output,
-                    type(self)
-                )
+        for class_name in file_module.classes():
+            yield (
+                file_module.structure[class_name]['lineno'],
+                file_module.structure[class_name]['col_offset'],
+                self._error_tmpl.format(class_name),
+                type(self)
+            )
