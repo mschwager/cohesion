@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 
 import collections
+import os
 import textwrap
 import unittest
 
 from cohesion import module
+
+from pyfakefs import fake_filesystem_unittest
 
 
 class TestModule(unittest.TestCase):
@@ -26,7 +29,7 @@ class TestModule(unittest.TestCase):
     def test_module_empty(self):
         python_string = textwrap.dedent("")
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
 
         result = python_module.classes()
 
@@ -38,7 +41,7 @@ class TestModule(unittest.TestCase):
             pass
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
 
         result = python_module.classes()
         expected = ["Cls"]
@@ -52,7 +55,7 @@ class TestModule(unittest.TestCase):
                 pass
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
 
         result = python_module.functions("Cls")
         expected = ["func"]
@@ -67,7 +70,7 @@ class TestModule(unittest.TestCase):
                 pass
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
 
         result = python_module.class_variables("Cls")
         expected = ["class_variable"]
@@ -81,7 +84,7 @@ class TestModule(unittest.TestCase):
                 self.function_variable = 'foo'
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
 
         result = python_module.function_variables("Cls", "func")
         expected = ["function_variable"]
@@ -96,7 +99,7 @@ class TestModule(unittest.TestCase):
                 self.instance_variable = 'bar'
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
         python_module.filter_below(40)
 
         result = python_module.classes()
@@ -111,7 +114,7 @@ class TestModule(unittest.TestCase):
                 self.instance_variable = 'bar'
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
         python_module.filter_below(60)
 
         result = python_module.classes()
@@ -127,7 +130,7 @@ class TestModule(unittest.TestCase):
                 self.instance_variable = 'bar'
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
         python_module.filter_below(50)
 
         result = python_module.classes()
@@ -143,7 +146,7 @@ class TestModule(unittest.TestCase):
                 self.instance_variable = 'bar'
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
         python_module.filter_above(60)
 
         result = python_module.classes()
@@ -158,7 +161,7 @@ class TestModule(unittest.TestCase):
                 self.instance_variable = 'bar'
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
         python_module.filter_above(40)
 
         result = python_module.classes()
@@ -174,7 +177,7 @@ class TestModule(unittest.TestCase):
                 self.instance_variable = 'bar'
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
         python_module.filter_above(50)
 
         result = python_module.classes()
@@ -190,7 +193,7 @@ class TestModule(unittest.TestCase):
                 self.instance_variable = 'bar'
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
 
         result = python_module.class_cohesion_percentage("Cls")
         expected = 50
@@ -205,7 +208,7 @@ class TestModule(unittest.TestCase):
             pass
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
 
         result = python_module.structure["Cls"]["lineno"]
 
@@ -221,10 +224,39 @@ class TestModule(unittest.TestCase):
                 pass
         """)
 
-        python_module = module.Module(python_string)
+        python_module = module.Module.from_string(python_string)
 
         result = python_module.structure["Cls"]["col_offset"]
         expected = 4
+
+        self.assertEqual(result, expected)
+
+
+class TestModuleFile(fake_filesystem_unittest.TestCase):
+
+    def setUp(self):
+        self.setUpPyfakefs()
+
+    def tearDown(self):
+        # It is no longer necessary to add self.tearDownPyfakefs()
+        pass
+
+    def test_module_from_file(self):
+        filename = os.path.join("directory", "filename.py")
+
+        contents = textwrap.dedent("""
+        class Cls(object):
+            pass
+        """)
+
+        self.fs.CreateFile(
+            filename,
+            contents=contents
+        )
+        file_module = module.Module.from_file(filename)
+
+        result = file_module.classes()
+        expected = ["Cls"]
 
         self.assertEqual(result, expected)
 

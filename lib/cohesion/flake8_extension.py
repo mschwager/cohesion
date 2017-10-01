@@ -40,7 +40,7 @@ class CohesionChecker(object):
         cls.cohesion_below = options.cohesion_below
 
     def run(self):
-        file_module = cohesion.module.Module.from_file(self.filename)
+        file_module = cohesion.module.Module(self.tree)
         file_module.filter_below(self.cohesion_below)
 
         for class_name in file_module.classes():

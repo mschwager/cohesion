@@ -10,10 +10,8 @@ from . import filesystem
 
 
 class Module(object):
-    def __init__(self, module_contents):
-        file_ast_node = parser.get_ast_node_from_string(module_contents)
-
-        self.structure = self._create_structure(file_ast_node)
+    def __init__(self, module_ast_node):
+        self.structure = self._create_structure(module_ast_node)
 
     def classes(self):
         return list(self.structure.keys())
@@ -31,7 +29,13 @@ class Module(object):
     def from_file(cls, filename):
         file_contents = filesystem.get_file_contents(filename)
 
-        return cls(file_contents)
+        return cls.from_string(file_contents)
+
+    @classmethod
+    def from_string(cls, python_string):
+        module_ast_node = parser.get_ast_node_from_string(python_string)
+
+        return cls(module_ast_node)
 
     def _filter(self, predicate=lambda class_name: True):
         self.structure = {
