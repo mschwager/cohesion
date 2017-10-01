@@ -78,7 +78,7 @@ class ExampleClass2(object):
 ```
 $ cohesion --files example.py --verbose
 File: example.py
-  Class: ExampleClass1
+  Class: ExampleClass1 (1:0)
     Function: func1 2/3 66.67%
       Variable: class_variable1 True
       Variable: class_variable2 False
@@ -92,7 +92,7 @@ File: example.py
       Variable: class_variable2 False
       Variable: instance_variable False
     Total: 33.33%
-  Class: ExampleClass2
+  Class: ExampleClass2 (23:0)
     Function: func1 1/1 100.00%
       Variable: instance_variable1 True
     Total: 100.00%
@@ -108,14 +108,14 @@ First, ensure your installation has registered `cohesion`:
 
 ```
 $ flake8 --version
-3.2.1 (pyflakes: 1.0.0, cohesion: 0.7.0, pycodestyle: 2.2.0, mccabe: 0.5.3) CPython 2.7.12 on Linux
+3.2.1 (pyflakes: 1.0.0, cohesion: 0.8.0, pycodestyle: 2.2.0, mccabe: 0.5.3) CPython 2.7.12 on Linux
 ```
 
 And now use `flake8` to lint your file with the extension enabled:
 
 ```
-$ flake8 --enable-extension=C50 example.py
-example.py:1:1: C501 class has low cohesion
+$ flake8 --enable-extension=H60 example.py
+example.py:1:1: H601 class has low cohesion
 ```
 
 ## Python Versions
