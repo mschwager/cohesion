@@ -8,8 +8,8 @@ class CohesionChecker(object):
     version = cohesion.__version__
     off_by_default = True
 
-    _code = 'C501'
-    _error_tmpl = 'C501 class has low ({0:.2f}%) cohesion'
+    _code = 'H601'
+    _error_tmpl = 'H601 class has low ({0:.2f}%) cohesion'
 
     def __init__(self, tree, filename):
         self.tree = tree

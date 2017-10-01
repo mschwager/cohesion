@@ -40,7 +40,7 @@ setup(
             'cohesion = cohesion.__main__:main',
         ],
         'flake8.extension': [
-            'C50 = cohesion.flake8_extension:CohesionChecker'
+            'H60 = cohesion.flake8_extension:CohesionChecker'
         ],
     },
 )
