@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This project adheres to [CHANGELOG](http://keepachangelog.com/).
 
+## [0.8.0] - 2017-10-01
+### Added
+- Flake8 support
+- Filtering on cohesion values below/above a certain threshold
+- Class line number and column offset in output
+
+### Removed
+- Python 3.2 and 3.3 support
+
 ## [0.7.0] - 2017-06-15
 ### Added
 - Python 3.6 support
