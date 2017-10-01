@@ -59,10 +59,13 @@ class Module(object):
             len(self.structure[class_name]["functions"])
         )
 
-        class_percentage = (
-            total_function_variable_count /
-            total_class_variable_count
-        ) * 100
+        if total_class_variable_count != 0.0:
+            class_percentage = (
+                total_function_variable_count /
+                total_class_variable_count
+            ) * 100
+        else:
+            class_percentage = 0.0
 
         self.structure[class_name]["cohesion"] = class_percentage
 

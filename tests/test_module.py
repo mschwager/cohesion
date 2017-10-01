@@ -48,6 +48,19 @@ class TestModule(unittest.TestCase):
 
         self.assertEqual(result, expected)
 
+    def test_module_class_empty_cohesion_percent(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            pass
+        """)
+
+        python_module = module.Module.from_string(python_string)
+
+        result = python_module.class_cohesion_percentage("Cls")
+        expected = 0.0
+
+        self.assertEqual(result, expected)
+
     def test_module_function_empty(self):
         python_string = textwrap.dedent("""
         class Cls(object):

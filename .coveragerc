@@ -2,3 +2,4 @@
 include = lib/cohesion/parser.py
           lib/cohesion/filesystem.py
           lib/cohesion/module.py
+          lib/cohesion/flake8_extension.py
