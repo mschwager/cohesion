@@ -9,7 +9,7 @@ class CohesionChecker(object):
     off_by_default = True
 
     _code = 'C501'
-    _error_tmpl = 'C501 class has low cohesion'
+    _error_tmpl = 'C501 class has low ({0:.2f}%) cohesion'
 
     def __init__(self, tree, filename):
         self.tree = tree
@@ -44,9 +44,10 @@ class CohesionChecker(object):
         file_module.filter_below(self.cohesion_below)
 
         for class_name in file_module.classes():
+            cohesion_percentage = file_module.class_cohesion_percentage(class_name)
             yield (
                 file_module.structure[class_name]['lineno'],
                 file_module.structure[class_name]['col_offset'],
-                self._error_tmpl.format(class_name),
+                self._error_tmpl.format(cohesion_percentage),
                 type(self)
             )

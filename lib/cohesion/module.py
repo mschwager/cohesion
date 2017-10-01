@@ -45,6 +45,9 @@ class Module(object):
         }
 
     def class_cohesion_percentage(self, class_name):
+        if self.structure[class_name]["cohesion"] is not None:
+            return self.structure[class_name]["cohesion"]
+
         total_function_variable_count = sum(
             len(function_structure["variables"])
             for function_structure in
@@ -60,6 +63,8 @@ class Module(object):
             total_function_variable_count /
             total_class_variable_count
         ) * 100
+
+        self.structure[class_name]["cohesion"] = class_percentage
 
         return class_percentage
 
@@ -115,6 +120,7 @@ class Module(object):
                 for method_name, method in class_method_name_to_method.items()
             }
 
+            result[class_name]["cohesion"] = None
             result[class_name]["lineno"] = module_class.lineno
             result[class_name]["col_offset"] = module_class.col_offset
             result[class_name]["variables"] = class_variable_names
