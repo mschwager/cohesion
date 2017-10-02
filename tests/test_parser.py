@@ -385,6 +385,25 @@ class TestParser(unittest.TestCase):
 
         self.assertEmpty(result)
 
+    def test_bound_method_static_no_arguments(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            @staticmethod
+            def func():
+                pass
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        methods = [
+            method
+            for cls in parser.get_module_classes(node)
+            for method in parser.get_class_methods(cls)
+            if parser.is_class_method_bound(method)
+        ]
+        result = [method.name for method in methods]
+
+        self.assertEmpty(result)
+
     def test_bound_method_unbound(self):
         python_string = textwrap.dedent("""
         class Cls(object):
