@@ -1,6 +1,7 @@
 # Cohesion
 
 [![Build Status](https://travis-ci.org/mschwager/cohesion.svg?branch=master)](https://travis-ci.org/mschwager/cohesion)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/mschwager/cohesion?branch=master&svg=true)](https://ci.appveyor.com/project/mschwager/cohesion/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/mschwager/cohesion/badge.svg?branch=master)](https://coveralls.io/github/mschwager/cohesion?branch=master)
 [![Python Versions](https://img.shields.io/pypi/pyversions/cohesion.svg)](https://img.shields.io/pypi/pyversions/cohesion.svg)
 [![PyPI Version](https://img.shields.io/pypi/v/cohesion.svg)](https://img.shields.io/pypi/v/cohesion.svg)
