@@ -40,7 +40,7 @@ OR
 ```
 $ git clone https://github.com/mschwager/cohesion.git
 $ cd cohesion
-$ python lib/cohesion/__main__.py -h
+$ PYTHONPATH=lib/ python -m cohesion -h
 ```
 
 # Using

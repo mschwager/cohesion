@@ -4,8 +4,6 @@ from __future__ import print_function
 
 import argparse
 import json
-import os
-import sys
 
 from . import filesystem
 from . import module
