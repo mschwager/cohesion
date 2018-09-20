@@ -26,7 +26,7 @@ setup(
     version=cohesion.__version__,
     description='A tool for measuring Python class cohesion.',
     long_description=long_description,
-    long_description_context_type='text/markdown',
+    long_description_content_type='text/markdown',
     url='https://github.com/mschwager/cohesion',
     packages=['cohesion'],
     package_dir={'': PACKAGE_DIRECTORY},

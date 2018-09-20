@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This project adheres to [CHANGELOG](http://keepachangelog.com/).
 
+## [0.9.1] - 2018-09-20
+### Fixed
+- Package long description content type
+
 ## [0.9.0] - 2018-09-20
 ### Added
 - Python 3.7 support
