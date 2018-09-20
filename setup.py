@@ -15,10 +15,18 @@ requirements_dev_filename = os.path.join(
 with open(requirements_dev_filename) as fd:
     tests_require = [i.strip() for i in fd.readlines()]
 
+long_description_filename = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 'README.md')
+
+with open(long_description_filename) as fd:
+    long_description = fd.read()
+
 setup(
     name=cohesion.__name__,
     version=cohesion.__version__,
     description='A tool for measuring Python class cohesion.',
+    long_description=long_description,
+    long_description_context_type='text/markdown',
     url='https://github.com/mschwager/cohesion',
     packages=['cohesion'],
     package_dir={'': PACKAGE_DIRECTORY},
