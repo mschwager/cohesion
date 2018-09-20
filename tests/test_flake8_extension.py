@@ -98,6 +98,21 @@ class TestFlake8Extension(unittest.TestCase):
 
         self.assertEqual(result, expected)
 
+    def test_flake8_extension_bad_option_type(self):
+        python_string = textwrap.dedent("""
+        class Cls(object):
+            def func(self):
+                self.variable = 'foo'
+        """)
+
+        ast_node = parser.get_ast_node_from_string(python_string)
+        checker = flake8_extension.CohesionChecker(ast_node, "unused")
+        checker.cohesion_below = str(0.0)
+
+        result = list(checker.run())
+
+        self.assertEmpty(result)
+
 
 if __name__ == "__main__":
     unittest.main()

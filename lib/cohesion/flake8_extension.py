@@ -41,7 +41,7 @@ class CohesionChecker(object):
 
     def run(self):
         file_module = cohesion.module.Module(self.tree)
-        file_module.filter_below(self.cohesion_below)
+        file_module.filter_below(float(self.cohesion_below))
 
         for class_name in file_module.classes():
             cohesion_percentage = file_module.class_cohesion_percentage(class_name)
