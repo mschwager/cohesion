@@ -8,7 +8,7 @@ environment:
     - PYTHON: "C:\\Python34"
     - PYTHON: "C:\\Python35"
     - PYTHON: "C:\\Python36"
-
+    - PYTHON: "C:\\Python37"
 
 install:
   - "%PYTHON%/Scripts/pip.exe install --requirement requirements-dev.txt"
