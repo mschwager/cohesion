@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This project adheres to [CHANGELOG](http://keepachangelog.com/).
 
+## [0.9.0] - 2018-09-20
+### Added
+- Python 3.7 support
+
+### Fixed
+- Bug with setuptools specifying cohesion_below option as a str
+
 ## [0.8.0] - 2017-10-01
 ### Added
 - Flake8 support
