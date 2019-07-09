@@ -38,14 +38,10 @@ def print_module_structure(filename, module_structure, verbose=False):
         )
         leftpad_print(class_output_string, leftpad_length=2)
 
-        class_variable_count = len(class_structure["variables"])
-
-        total_function_variable_percentage = 0.0
         for function_name, function_structure in class_structure["functions"].items():
-            function_variable_count = len(function_structure["variables"])
             function_variable_percentage = percentage(
-                function_variable_count,
-                class_variable_count
+                len(function_structure["variables"]),
+                len(class_structure["variables"])
             )
 
             function_output_string = "Function: {}".format(function_name)
@@ -57,14 +53,14 @@ def print_module_structure(filename, module_structure, verbose=False):
                 function_variable_percentage = 0.0
                 function_output_string = "{0} {1}/{2} 0.0%".format(
                     function_output_string,
-                    function_variable_count,
-                    class_variable_count
+                    len(function_structure["variables"]),
+                    len(class_structure["variables"])
                 )
             else:
                 function_output_string = "{0} {1}/{2} {3:.2f}%".format(
                     function_output_string,
-                    function_variable_count,
-                    class_variable_count,
+                    len(function_structure["variables"]),
+                    len(class_structure["variables"]),
                     function_variable_percentage
                 )
 
@@ -83,15 +79,7 @@ def print_module_structure(filename, module_structure, verbose=False):
                             leftpad_length=6
                         )
 
-            total_function_variable_percentage += function_variable_percentage
-
-        class_function_count = len(class_structure["functions"])
-        if class_function_count:
-            class_variable_percentage = total_function_variable_percentage / class_function_count
-        else:
-            class_variable_percentage = 0.0
-
-        leftpad_print("Total: {0:.2f}%".format(class_variable_percentage), leftpad_length=4)
+        leftpad_print("Total: {}%".format(class_structure["cohesion"]), leftpad_length=4)
 
 
 def parse_args():

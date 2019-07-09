@@ -13,6 +13,9 @@ class Module(object):
     def __init__(self, module_ast_node):
         self.structure = self._create_structure(module_ast_node)
 
+        for class_name in self.structure.keys():
+            self.class_cohesion_percentage(class_name)
+
     def classes(self):
         return list(self.structure.keys())
 
@@ -60,10 +63,10 @@ class Module(object):
         )
 
         if total_class_variable_count != 0.0:
-            class_percentage = (
+            class_percentage = round((
                 total_function_variable_count /
                 total_class_variable_count
-            ) * 100
+            ) * 100, 2)
         else:
             class_percentage = 0.0
 
