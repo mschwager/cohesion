@@ -12,6 +12,7 @@ matrix:
 install:
     - pip install -r requirements-dev.txt
 script:
+    - flake8
     - nose2 --with-coverage
 after_success:
     - coveralls
