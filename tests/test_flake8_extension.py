@@ -17,7 +17,7 @@ sys.path.append(
     )
 )
 
-import flake8_extension
+import flake8_extension  # noqa E402: see above
 
 
 class TestFlake8Extension(unittest.TestCase):
