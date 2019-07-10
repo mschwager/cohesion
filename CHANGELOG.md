@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This project adheres to [CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased]
+
+## [1.0.0] - 2019-07-10
 ### Changed
 - Enable cohesion by default
 
