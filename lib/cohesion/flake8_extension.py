@@ -6,7 +6,7 @@ import cohesion
 class CohesionChecker(object):
     name = cohesion.__name__
     version = cohesion.__version__
-    off_by_default = True
+    off_by_default = False
 
     _code = 'H601'
     _error_tmpl = 'H601 class has low ({0:.2f}%) cohesion'

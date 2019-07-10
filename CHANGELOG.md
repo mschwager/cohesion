@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This project adheres to [CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased]
+### Changed
+- Enable cohesion by default
+
 ### Fixed
 - Debugging and standard output not producing the same results
 

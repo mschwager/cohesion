@@ -31,7 +31,7 @@ Some of the advantages of high cohesion, also by Wikipedia:
 # Installing
 
 ```
-$ pip install cohesion
+$ python -m pip install cohesion
 $ cohesion -h
 ```
 
@@ -45,7 +45,7 @@ $ PYTHONPATH=lib/ python -m cohesion -h
 
 # Using
 
-`Cohesion` measures class and instance variable usage across the methods
+Cohesion measures class and instance variable usage across the methods
 of that class.
 
 ```
@@ -104,29 +104,29 @@ a cohesion value below or above the specified percentage, respectively.
 
 ## Flake8 Support
 
-You can now lint Python files for classes with low cohesion with `flake8`!
-First, ensure your installation has registered `cohesion`:
+Cohesion supports being run by `flake8`. First, ensure your installation has
+registered `cohesion`:
 
 ```
 $ flake8 --version
 3.2.1 (pyflakes: 1.0.0, cohesion: 0.8.0, pycodestyle: 2.2.0, mccabe: 0.5.3) CPython 2.7.12 on Linux
 ```
 
-And now use `flake8` to lint your file with the extension enabled:
+And now use `flake8` to lint your file:
 
 ```
-$ flake8 --enable-extension=H60 example.py
+$ flake8 example.py
 example.py:1:1: H601 class has low cohesion
 ```
 
 ## Python Versions
 
-If you would like to simultaneously run `Cohesion` on Python 2 and Python 3
+If you would like to simultaneously run Cohesion on Python 2 and Python 3
 code then you will have to install it for both versions. I.e.
 
 ```
-$ pip2 install cohesion
-$ pip3 install cohesion
+$ python2 -m pip install cohesion
+$ python3 -m pip install cohesion
 ```
 
 Then use the corresponding version to run the module:
@@ -141,7 +141,7 @@ $ python3 -m cohesion --files python3_file.py
 First, install development packages:
 
 ```
-$ pip install -r requirements-dev.txt
+$ python -m pip install -r requirements-dev.txt
 ```
 
 ## Testing
