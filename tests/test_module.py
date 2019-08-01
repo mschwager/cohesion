@@ -102,7 +102,7 @@ class TestModule(unittest.TestCase):
         result = python_module.function_variables("Cls", "func")
         expected = ["function_variable"]
 
-        self.assertEquals(result, expected)
+        self.assertEqual(result, expected)
 
     def test_module_filter_below_false(self):
         python_string = textwrap.dedent("""
