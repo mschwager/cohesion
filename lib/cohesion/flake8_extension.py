@@ -20,7 +20,7 @@ class CohesionChecker(object):
         flag = '--cohesion-below'
         kwargs = {
             'action': 'store',
-            'type': 'float',
+            'type': float,
             'default': 50.0,
             'help': 'only show cohesion results with this percentage or lower',
             'parse_from_config': 'True',
