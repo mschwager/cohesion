@@ -262,7 +262,7 @@ class TestModuleFile(fake_filesystem_unittest.TestCase):
             pass
         """)
 
-        self.fs.CreateFile(
+        self.fs.create_file(
             filename,
             contents=contents
         )

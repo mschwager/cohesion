@@ -38,7 +38,7 @@ class TestFilesystem(fake_filesystem_unittest.TestCase):
             pass
         """)
 
-        self.fs.CreateFile(
+        self.fs.create_file(
             filename,
             contents=contents
         )
@@ -49,12 +49,12 @@ class TestFilesystem(fake_filesystem_unittest.TestCase):
     def test_recursively_get_files_from_directory(self):
         filenames = [
             os.path.join(".", "filename.txt"),
-            os.path.join("directory", "inner_file.txt"),
-            os.path.join("directory", "nested", "deep_file.py"),
+            os.path.join(".", "directory", "inner_file.txt"),
+            os.path.join(".", "directory", "nested", "deep_file.py"),
         ]
 
         for filename in filenames:
-            self.fs.CreateFile(filename, contents='')
+            self.fs.create_file(filename, contents='')
 
         result = filesystem.recursively_get_files_from_directory('.')
 
@@ -64,17 +64,17 @@ class TestFilesystem(fake_filesystem_unittest.TestCase):
         filenames = [
             os.path.join(".", "filename.txt"),
             os.path.join(".", "upper.py"),
-            os.path.join("directory", "inner_file.txt"),
-            os.path.join("directory", "nested", "deep_file.py"),
+            os.path.join(".", "directory", "inner_file.txt"),
+            os.path.join(".", "directory", "nested", "deep_file.py"),
         ]
 
         for filename in filenames:
-            self.fs.CreateFile(filename, contents='')
+            self.fs.create_file(filename, contents='')
 
         result = filesystem.recursively_get_python_files_from_directory('.')
         expected = [
             os.path.join(".", "upper.py"),
-            os.path.join("directory", "nested", "deep_file.py"),
+            os.path.join(".", "directory", "nested", "deep_file.py"),
         ]
 
         self.assertCountEqual(result, expected)
