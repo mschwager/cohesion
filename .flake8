@@ -1,4 +1,4 @@
 [flake8]
-ignore = E501,W504
+ignore = E501,W504,H601
 include = lib,tests
 exclude = setup.py
