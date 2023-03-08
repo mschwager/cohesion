@@ -4,8 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This project adheres to [CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased]
+
+## [1.1.0]
 ### Added
 - Python 3.8, 3.9, 3.10, and 3.11 support
+- Flake8 v6 support
 
 ### Removed
 - Python 2.7, 3.4, 3.5, and 3.6 support
