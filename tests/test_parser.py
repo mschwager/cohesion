@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import ast
-import collections
 import textwrap
 import unittest
 
@@ -12,17 +11,6 @@ class TestParser(unittest.TestCase):
 
     def assertEmpty(self, iterable):
         self.assertEqual(len(iterable), 0)
-
-    def assertCountEqual(self, first, second):
-        """
-        Test whether two sequences contain the same elements.
-
-        This exists in Python 3, but not Python 2.
-        """
-        self.assertEqual(
-            collections.Counter(list(first)),
-            collections.Counter(list(second))
-        )
 
     def test_valid_syntax(self):
         python_string = textwrap.dedent("""
@@ -702,6 +690,35 @@ class TestParser(unittest.TestCase):
         ]
         # Ensure 'attr2' isn't in the list of included names
         expected = ['attr1']
+
+        self.assertCountEqual(result, expected)
+
+    def test_get_all_class_variable_names_missing_function_name(self):
+        python_string = textwrap.dedent("""
+        class C():
+
+            def a(self):
+                print('a')
+
+            def b(self):
+                print('b')
+
+            def f(self, choice):
+                (self.a if choice else self.b)()
+
+        c = C()
+        c.f(True)
+        c.f(False)
+        """)
+
+        node = parser.get_ast_node_from_string(python_string)
+        classes = parser.get_module_classes(node)
+        result = [
+            name
+            for cls in classes
+            for name in parser.get_all_class_variable_names(cls)
+        ]
+        expected = ['a', 'b']
 
         self.assertCountEqual(result, expected)
 

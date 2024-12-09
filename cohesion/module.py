@@ -58,14 +58,14 @@ class Module(object):
         )
 
         total_class_variable_count = (
-            len(self.structure[class_name]["variables"]) *
-            len(self.structure[class_name]["functions"])
+            len(self.structure[class_name]["variables"])
+            * len(self.structure[class_name]["functions"])
         )
 
         if total_class_variable_count != 0.0:
             class_percentage = round((
-                total_function_variable_count /
-                total_class_variable_count
+                total_function_variable_count
+                / total_class_variable_count
             ) * 100, 2)
         else:
             class_percentage = 0.0

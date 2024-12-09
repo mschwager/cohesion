@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import collections
 import os
 import textwrap
 import unittest
@@ -18,17 +17,6 @@ class TestFilesystem(fake_filesystem_unittest.TestCase):
     def tearDown(self):
         # It is no longer necessary to add self.tearDownPyfakefs()
         pass
-
-    def assertCountEqual(self, first, second):
-        """
-        Test whether two sequences contain the same elements.
-
-        This exists in Python 3, but not Python 2.
-        """
-        self.assertEqual(
-            collections.Counter(list(first)),
-            collections.Counter(list(second))
-        )
 
     def test_get_file_contents(self):
         filename = os.path.join("directory", "filename.py")

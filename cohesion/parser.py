@@ -16,14 +16,12 @@ def get_object_name(obj):
         ast.FunctionDef: "name",
         ast.ClassDef: "name",
         ast.Subscript: "value",
+        ast.arg: "arg",
     }
 
-    # This is a new ast type in Python 3
-    if hasattr(ast, "arg"):
-        name_dispatch[ast.arg] = "arg"
-
     while not isinstance(obj, str):
-        assert type(obj) in name_dispatch
+        if type(obj) not in name_dispatch:
+            return None
         obj = getattr(obj, name_dispatch[type(obj)])
 
     return obj
@@ -47,14 +45,18 @@ def is_class_method_bound(method, arg_name=BOUND_METHOD_ARGUMENT_NAME):
 
     first_arg_name = get_object_name(first_arg)
 
-    return first_arg_name == arg_name
+    return first_arg_name is not None and first_arg_name == arg_name
 
 
 def class_method_has_decorator(method, decorator):
     """
     Return whether a class method has a specific decorator
     """
-    return decorator in [get_object_name(d) for d in method.decorator_list]
+    return decorator in [
+        object_name
+        for dec in method.decorator_list
+        if (object_name := get_object_name(dec)) is not None
+    ]
 
 
 def is_class_method_classmethod(method):
@@ -101,13 +103,14 @@ def get_instance_variables(node, bound_name_classifier=BOUND_METHOD_ARGUMENT_NAM
     node_attributes = [
         child
         for child in ast.walk(node)
-        if isinstance(child, ast.Attribute) and
-        get_attribute_name_id(child) == bound_name_classifier
+        if isinstance(child, ast.Attribute)
+        and get_attribute_name_id(child) == bound_name_classifier
     ]
     node_function_call_names = [
-        get_object_name(child)
+        object_name
         for child in ast.walk(node)
         if isinstance(child, ast.Call)
+        and (object_name := get_object_name(child)) is not None
     ]
     node_instance_variables = [
         attribute
@@ -123,8 +126,9 @@ def get_all_class_variable_names_used_in_method(method):
     given method
     """
     return {
-        get_object_name(variable)
+        object_name
         for variable in get_instance_variables(method)
+        if (object_name := get_object_name(variable)) is not None
     }
 
 
@@ -141,8 +145,9 @@ def get_all_class_variable_names(cls):
     given class
     """
     return {
-        get_object_name(variable)
+        object_name
         for variable in get_all_class_variables(cls)
+        if (object_name := get_object_name(variable)) is not None
     }
 
 

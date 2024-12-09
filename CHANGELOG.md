@@ -4,6 +4,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This project adheres to [CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased]
+### Added
+- Python 3.12, 3.13, and 3.14 support
+
+### Removed
+- Python 3.7, and 3.8 support
+
+### Fixed
+- Function calls without names ([#20](https://github.com/mschwager/cohesion/issues/20))
 
 ## [1.1.0]
 ### Added

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import collections
 import os
 import textwrap
 import unittest
@@ -14,17 +13,6 @@ class TestModule(unittest.TestCase):
 
     def assertEmpty(self, iterable):
         self.assertEqual(len(iterable), 0)
-
-    def assertCountEqual(self, first, second):
-        """
-        Test whether two sequences contain the same elements.
-
-        This exists in Python 3, but not Python 2.
-        """
-        self.assertEqual(
-            collections.Counter(list(first)),
-            collections.Counter(list(second))
-        )
 
     def test_module_empty(self):
         python_string = textwrap.dedent("")
