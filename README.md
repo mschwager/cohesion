@@ -98,7 +98,7 @@ registered `cohesion`:
 
 ```
 $ flake8 --version
-3.2.1 (pyflakes: 1.0.0, cohesion: 0.8.0, pycodestyle: 2.2.0, mccabe: 0.5.3) CPython 2.7.12 on Linux
+3.2.1 (pyflakes: 1.0.0, cohesion: 1.2.0, pycodestyle: 2.2.0, mccabe: 0.5.3) CPython 2.7.12 on Linux
 ```
 
 And now use `flake8` to lint your file:

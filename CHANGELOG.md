@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This project adheres to [CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased]
+
+## [1.2.0] - 2024-12-09
 ### Added
 - Python 3.12, 3.13, and 3.14 support
 
@@ -13,7 +15,7 @@ This project adheres to [CHANGELOG](http://keepachangelog.com/).
 ### Fixed
 - Function calls without names ([#20](https://github.com/mschwager/cohesion/issues/20))
 
-## [1.1.0]
+## [1.1.0] - 2023-03-08
 ### Added
 - Python 3.8, 3.9, 3.10, and 3.11 support
 - Flake8 v6 support
