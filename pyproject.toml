@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "cohesion"
+version = "1.1.0"
+description = "A tool for measuring Python class cohesion."
+authors = []
+license = "GPLv3"
+readme = "README.md"
+repository = "https://github.com/mschwager/cohesion"
+homepage = "https://github.com/mschwager/cohesion"
+packages = [{include = "cohesion"}]
+classifiers = [
+    'Environment :: Console',
+    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+    'Operating System :: MacOS :: MacOS X',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
+    'Topic :: Security',
+    'Topic :: Software Development :: Quality Assurance',
+]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+pytest-cov = "^5.0.0"
+pyfakefs = "^5.0.0"
+flake8 = ">=5.0.4"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.scripts]
+cohesion = "cohesion.__main__:main"
+
+[tool.poetry.plugins."flake8.extension"]
+H60 = "cohesion.flake8_extension:CohesionChecker"
+
+[tool.coverage.run]
+source = ["cohesion"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

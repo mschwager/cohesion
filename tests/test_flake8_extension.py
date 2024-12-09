@@ -1,23 +1,10 @@
 #!/usr/bin/env python
 
 import textwrap
-import sys
-import os
 import unittest
 
 from cohesion import parser
-
-# Since flake8_extension imports cohesion we cannot add it to the
-# module, and thus must come up with some tricks to import it
-sys.path.append(
-    os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        "lib",
-        "cohesion"
-    )
-)
-
-import flake8_extension  # noqa E402: see above
+from cohesion import flake8_extension
 
 
 class TestFlake8Extension(unittest.TestCase):

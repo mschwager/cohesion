@@ -32,14 +32,6 @@ $ python -m pip install cohesion
 $ cohesion -h
 ```
 
-OR
-
-```
-$ git clone https://github.com/mschwager/cohesion.git
-$ cd cohesion
-$ PYTHONPATH=lib/ python -m cohesion -h
-```
-
 # Using
 
 Cohesion measures class and instance variable usage across the methods
@@ -116,45 +108,28 @@ $ flake8 example.py
 example.py:1:1: H601 class has low cohesion
 ```
 
-## Python Versions
-
-If you would like to simultaneously run Cohesion on Python 2 and Python 3
-code then you will have to install it for both versions. I.e.
-
-```
-$ python2 -m pip install cohesion
-$ python3 -m pip install cohesion
-```
-
-Then use the corresponding version to run the module:
-
-```
-$ python2 -m cohesion --files python2_file.py
-$ python3 -m cohesion --files python3_file.py
-```
-
 # Developing
 
 First, install development packages:
 
 ```
-$ python -m pip install -r requirements-dev.txt
+$ python -m poetry install --with=dev
 ```
 
 ## Testing
 
 ```
-$ pytest
+$ python -m poetry run pytest
 ```
 
 ## Linting
 
 ```
-$ flake8
+$ python -m poetry run flake8
 ```
 
 ## Coverage
 
 ```
-$ pytest --cov
+$ python -m poetry run pytest --cov
 ```
